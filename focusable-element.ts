@@ -5,8 +5,5 @@ export function hasFocusableElement(element: HTMLElement): boolean {
 }
 
 export function getFocusableElements(element: HTMLElement): HTMLElement[] {
-  if (!hasFocusableElement(element)) {
-    return [];
-  }
   return [...element.querySelectorAll(FOCUSABLE_SELECTOR)] as HTMLElement[];
 }
