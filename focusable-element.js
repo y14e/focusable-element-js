@@ -1,9 +1,13 @@
-const FOCUSABLE_SELECTOR = 'a[href], area[href], button:not([disabled]), embed, iframe, input:not([disabled]):not([type="hidden"]), object, select:not([disabled]), textarea:not([disabled]), [contenteditable]:not([contenteditable="false"]), [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex]):not([disabled], [tabindex="-1"])';
 
 export function hasFocusableElement(element) {
-  return !!element.querySelector(FOCUSABLE_SELECTOR);
+  return !!getFocusableElements(element).length;
 }
 
 export function getFocusableElements(element) {
-  return [...element.querySelectorAll(FOCUSABLE_SELECTOR)];
+  function isVisible(element) {
+    const style = window.getComputedStyle(element);
+    return !!element.getClientRects().length && style.visibility !== 'hidden' && style.display !== 'none';
+  }
+  return [...element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(isVisible);
 }
