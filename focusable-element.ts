@@ -5,8 +5,5 @@ export function hasFocusableElement(element: HTMLElement): boolean {
 }
 
 export function getFocusableElements(element: HTMLElement): HTMLElement[] {
-  function isVisible(element: Element): boolean {
-    return !!element.getClientRects().length && window.getComputedStyle(element).visibility !== 'hidden';
-  }
-  return [...element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(isVisible) as HTMLElement[];
+  return [...element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
