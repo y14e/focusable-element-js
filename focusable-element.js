@@ -8,7 +8,7 @@ export function getFocusableElements(container) {
   return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility());
 }
 
-function getFocusableElementByOffset(offset, container, current, wrap = false) {
+function getRelativeFocusableElement(offset, container, current, wrap = false) {
   const focusables = getFocusableElements(container || document.body);
   const length = focusables.length;
   if (!length) {
@@ -27,10 +27,10 @@ function getFocusableElementByOffset(offset, container, current, wrap = false) {
   return focusables[newIndex];
 }
 
-export function getNextFocusableElement(container, current, wrap = false) {
+export function getRelativeFocusableElement(container, current, wrap = false) {
   return getFocusableElementByOffset(1, container, current, wrap);
 }
 
-export function getPreviousFocusableElement(container, current, wrap = false) {
+export function getRelativeFocusableElement(container, current, wrap = false) {
   return getFocusableElementByOffset(-1, container, current, wrap);
 }
