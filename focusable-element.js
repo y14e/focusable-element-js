@@ -11,7 +11,7 @@ export function getFocusableElements(container) {
 function getFocusableElementByOffset(offset, container, current, loop = false) {
   const focusables = getFocusableElements(container || document.body);
   const length = focusables.length;
-  if (length === 0) {
+  if (!length) {
     return null;
   }
   const currentIndex = focusables.indexOf(current || document.activeElement);
