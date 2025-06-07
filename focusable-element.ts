@@ -8,32 +8,29 @@ export function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
 
-export function getNextFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
+function getFocusableElementByOffset(offset: number, container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
   const focusables = getFocusableElements(container || document.body);
-  if (!focusables.length) {
+  if (focusables.length === 0) {
     return null;
   }
-  const index = focusables.indexOf(current || document.activeElement);
-  if (index === -1) {
+  const currentIndex = focusables.indexOf(current || document.activeElement);
+  if (currentIndex === -1) {
     return null;
   }
-  if (index === focusables.length - 1) {
-    return !loop ? null : focusables[0];
+  const newIndex = currentIndex + offset;
+  if (!loop) {
+    if (newIndex >= 0 && newIndex < focusables.length) {
+      return focusables[newIndex];
+    }
+    return null;
   }
-  return focusables[index + 1];
+  return focusables[(newIndex + focusables.length) % focusables.length];
+}
+
+export function getNextFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
+  return getFocusableElementByOffset(1, container, current, loop);
 }
 
 export function getPreviousFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
-  const focusables = getFocusableElements(container || document.body);
-  if (!focusables.length) {
-    return null;
-  }
-  const index = focusables.indexOf(current || document.activeElement);
-  if (index === -1) {
-    return null;
-  }
-  if (!index) {
-    return !loop ? null : focusables[focusables.length - 1];
-  }
-  return focusables[index - 1];
+  return getFocusableElementByOffset(-1, container, current, loop);
 }
