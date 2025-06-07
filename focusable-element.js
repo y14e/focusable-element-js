@@ -10,21 +10,21 @@ export function getFocusableElements(container) {
 
 function getFocusableElementByOffset(offset, container, current, loop = false) {
   const focusables = getFocusableElements(container || document.body);
-  if (focusables.length === 0) {
+  const length = focusables.length;
+  if (length === 0) {
     return null;
   }
   const currentIndex = focusables.indexOf(current || document.activeElement);
   if (currentIndex === -1) {
     return null;
   }
-  const newIndex = currentIndex + offset;
-  if (!loop) {
-    if (newIndex >= 0 && newIndex < focusables.length) {
-      return focusables[newIndex];
-    }
+  let newIndex = currentIndex + offset;
+  if (!loop && (newIndex < 0 || newIndex >= length)) {
     return null;
+  } else {
+    newIndex = (newIndex + length) % length;
   }
-  return focusables[(newIndex + focusables.length) % focusables.length];
+  return focusables[newIndex];
 }
 
 export function getNextFocusableElement(container, current, loop = false) {
