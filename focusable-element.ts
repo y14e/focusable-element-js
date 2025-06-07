@@ -8,7 +8,7 @@ export function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
 
-function getFocusableElementByOffset(offset: number, container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
+function getFocusableElementByOffset(offset: number, container: HTMLElement, current: HTMLElement, wrap = false): HTMLElement | null {
   const focusables = getFocusableElements(container || document.body);
   const length = focusables.length;
   if (!length) {
@@ -19,7 +19,7 @@ function getFocusableElementByOffset(offset: number, container: HTMLElement, cur
     return null;
   }
   let newIndex = currentIndex + offset;
-  if (!loop && (newIndex < 0 || newIndex >= length)) {
+  if (!wrap && (newIndex < 0 || newIndex >= length)) {
     return null;
   } else {
     newIndex = (newIndex + length) % length;
@@ -27,10 +27,10 @@ function getFocusableElementByOffset(offset: number, container: HTMLElement, cur
   return focusables[newIndex];
 }
 
-export function getNextFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
-  return getFocusableElementByOffset(1, container, current, loop);
+export function getNextFocusableElement(container: HTMLElement, current: HTMLElement, wrap = false): HTMLElement | null {
+  return getFocusableElementByOffset(1, container, current, wrap);
 }
 
-export function getPreviousFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
-  return getFocusableElementByOffset(-1, container, current, loop);
+export function getPreviousFocusableElement(container: HTMLElement, current: HTMLElement, wrap = false): HTMLElement | null {
+  return getFocusableElementByOffset(-1, container, current, wrap);
 }
