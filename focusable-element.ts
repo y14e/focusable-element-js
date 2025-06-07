@@ -1,32 +1,38 @@
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
 
-export function hasFocusableElement(element: HTMLElement): boolean {
-  return !!getFocusableElements(element).length;
+export function hasFocusableElement(container: HTMLElement): boolean {
+  return !!getFocusableElements(container).length;
 }
 
-export function getFocusableElements(element: HTMLElement): HTMLElement[] {
-  return [...element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
+export function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
 
-export function getNextFocusableElement(root: HTMLElement, from: HTMLElement, loop = false): HTMLElement | null {
-  const focusables = getFocusableElements(root || document.body);
+export function getNextFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
+  const focusables = getFocusableElements(container || document.body);
   if (!focusables.length) {
     return null;
   }
-  const index = focusables.indexOf(from || document.activeElement);
-  if (index === -1 || index === focusables.length - 1) {
+  const index = focusables.indexOf(current || document.activeElement);
+  if (index === -1) {
+    return null;
+  }
+  if (index === focusables.length - 1) {
     return !loop ? null : focusables[0];
   }
   return focusables[index + 1];
 }
 
-export function getPreviousFocusableElement(root: HTMLElement, from: HTMLElement, loop = false): HTMLElement | null {
-  const focusables = getFocusableElements(root || document.body);
+export function getPreviousFocusableElement(container: HTMLElement, current: HTMLElement, loop = false): HTMLElement | null {
+  const focusables = getFocusableElements(container || document.body);
   if (!focusables.length) {
     return null;
   }
-  const index = focusables.indexOf(from || document.activeElement);
-  if (index === -1 || !index) {
+  const index = focusables.indexOf(current || document.activeElement);
+  if (index === -1) {
+    return null;
+  }
+  if (!index) {
     return !loop ? null : focusables[focusables.length - 1];
   }
   return focusables[index - 1];
