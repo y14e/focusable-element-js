@@ -19,7 +19,7 @@ function getRelativeFocusableElement(offset, container, current, wrap = false) {
     return null;
   }
   let newIndex = currentIndex + offset;
-  if (!wrap && (newIndex < 0 || newIndex >= length)) {
+  if ((newIndex < 0 || newIndex >= length) && !wrap) {
     return null;
   } else {
     newIndex = (newIndex + length) % length;
