@@ -18,13 +18,11 @@ function getRelativeFocusableElement(offset, container, current, wrap = false) {
   if (currentIndex === -1) {
     return null;
   }
-  let newIndex = currentIndex + offset;
-  if ((newIndex < 0 || newIndex >= length) && !wrap) {
+  const offsetIndex = currentIndex + offset;
+  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) {
     return null;
-  } else {
-    newIndex = (newIndex + length) % length;
   }
-  return focusables[newIndex];
+  return focusables[(offsetIndex + length) % length];
 }
 
 export function getNextFocusableElement(container, current, wrap = false) {
