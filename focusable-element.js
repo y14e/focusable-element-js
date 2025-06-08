@@ -27,10 +27,10 @@ function getRelativeFocusableElement(offset, container, current, wrap = false) {
   return focusables[newIndex];
 }
 
-export function getRelativeFocusableElement(container, current, wrap = false) {
-  return getFocusableElementByOffset(1, container, current, wrap);
+export function getNextFocusableElement(container, current, wrap = false) {
+  return getRelativeFocusableElement(1, container, current, wrap);
 }
 
-export function getRelativeFocusableElement(container, current, wrap = false) {
-  return getFocusableElementByOffset(-1, container, current, wrap);
+export function getPreviousFocusableElement(container, current, wrap = false) {
+  return getRelativeFocusableElement(-1, container, current, wrap);
 }
