@@ -14,7 +14,7 @@ function getRelativeFocusableElement(offset: number, container: HTMLElement, cur
   if (!length) {
     return null;
   }
-  const currentIndex = focusables.indexOf(current || document.activeElement);
+  const currentIndex = focusables.indexOf(current || (document.activeElement as HTMLElement));
   if (currentIndex === -1) {
     return null;
   }
