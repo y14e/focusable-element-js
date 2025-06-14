@@ -1,4 +1,4 @@
-interface FocusableElementOptions {
+type FocusableElementOptions {
   offset: number;
   current?: HTMLElement | null;
   wrap?: boolean;
