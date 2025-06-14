@@ -1,3 +1,9 @@
+interface FocusableElementOptions {
+  offset: number;
+  current?: HTMLElement | null;
+  wrap?: boolean;
+}
+
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
 
 export function hasFocusableElement(container?: HTMLElement | null): boolean {
@@ -6,12 +12,6 @@ export function hasFocusableElement(container?: HTMLElement | null): boolean {
 
 export function getFocusableElements(container?: HTMLElement | null): HTMLElement[] {
   return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
-}
-
-interface FocusableElementOptions {
-  offset: number;
-  current?: HTMLElement | null;
-  wrap?: boolean;
 }
 
 function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { offset, current, wrap = false }: FocusableElementOptions): HTMLElement | null {
