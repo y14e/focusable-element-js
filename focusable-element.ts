@@ -1,6 +1,6 @@
 type FocusableElementOptions = {
-  offset: number;
   current?: HTMLElement | null;
+  offset: number;
   wrap?: boolean;
 };
 
@@ -14,7 +14,7 @@ export function getFocusableElements(container?: HTMLElement | null): HTMLElemen
   return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
 
-function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { offset, current, wrap = false }: FocusableElementOptions): HTMLElement | null {
+function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current, offset, wrap = false }: FocusableElementOptions): HTMLElement | null {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
   if (!length) {

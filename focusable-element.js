@@ -8,7 +8,7 @@ export function getFocusableElements(container) {
   return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility());
 }
 
-function getRelativeFocusableElement(container = document.body || document.documentElement, { offset, current = document.activeElement, wrap = false }) {
+function getRelativeFocusableElement(container = document.body || document.documentElement, { current = document.activeElement, offset, wrap = false }) {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
   if (!length) {
