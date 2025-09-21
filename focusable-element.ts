@@ -11,7 +11,7 @@ export function hasFocusableElement(container?: HTMLElement | null): boolean {
 }
 
 export function getFocusableElements(container?: HTMLElement | null): HTMLElement[] {
-  return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
+  return [...(container || document.body || document.documentElement).querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility());
 }
 
 function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current, offset, wrap = false }: FocusableElementOptions): HTMLElement | null {
@@ -22,13 +22,13 @@ function getRelativeFocusableElement(container: HTMLElement | null = document.bo
   }
   function getActiveElement(): HTMLElement | null {
     let active = document.activeElement;
-    while (active instanceof HTMLElement && active.shadowRoot?.activeElement) {
+    while (active && active.shadowRoot?.activeElement) {
       active = active.shadowRoot.activeElement;
     }
     return active instanceof HTMLElement ? active : null;
   }
   const active = getActiveElement();
-  current = current instanceof HTMLElement ? current : active instanceof HTMLElement ? active : null;
+  current = current || active || null;
   if (!current) {
     return null;
   }
