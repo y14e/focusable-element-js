@@ -11,7 +11,7 @@ export function hasFocusableElement(container?: HTMLElement | null): boolean {
 }
 
 export function getFocusableElements(container?: HTMLElement | null): HTMLElement[] {
-  return [...(container || document.body || document.documentElement).querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility());
+  return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter(element => element.checkVisibility()) as HTMLElement[];
 }
 
 function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current, offset, wrap = false }: FocusableElementOptions): HTMLElement | null {
