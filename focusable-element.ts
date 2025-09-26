@@ -17,28 +17,18 @@ export function getFocusableElements(container?: HTMLElement | null): HTMLElemen
 function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current, offset, wrap = false }: FocusableElementOptions): HTMLElement | null {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
-  if (!length) {
-    return null;
-  }
-  function getActiveElement(): HTMLElement | null {
+  if (!length) return null;
+  const getActiveElement = (): HTMLElement | null => {
     let active = document.activeElement;
-    while (active && active.shadowRoot?.activeElement) {
-      active = active.shadowRoot.activeElement;
-    }
+    while (active && active.shadowRoot?.activeElement) active = active.shadowRoot.activeElement;
     return active as HTMLElement | null;
-  }
+  };
   current = current || getActiveElement();
-  if (!current) {
-    return null;
-  }
+  if (!current) return null;
   const currentIndex = focusables.indexOf(current);
-  if (currentIndex === -1) {
-    return null;
-  }
+  if (currentIndex === -1) return null;
   const offsetIndex = currentIndex + offset;
-  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) {
-    return null;
-  }
+  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) return null;
   return focusables[(offsetIndex + length) % length];
 }
 

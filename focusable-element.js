@@ -11,28 +11,18 @@ export function getFocusableElements(container) {
 function getRelativeFocusableElement(container = document.body || document.documentElement, { current = document.activeElement, offset, wrap = false }) {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
-  if (!length) {
-    return null;
-  }
-  function getActiveElement() {
+  if (!length) return null;
+  const getActiveElement = () => {
     let active = document.activeElement;
-    while (active && active.shadowRoot?.activeElement) {
-      active = active.shadowRoot.activeElement;
-    }
+    while (active && active.shadowRoot?.activeElement) active = active.shadowRoot.activeElement;
     return active;
-  }
+  };
   current = current || getActiveElement();
-  if (!current) {
-    return null;
-  }
+  if (!current) return null;
   const currentIndex = focusables.indexOf(current);
-  if (currentIndex === -1) {
-    return null;
-  }
+  if (currentIndex === -1) return null;
   const offsetIndex = currentIndex + offset;
-  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) {
-    return null;
-  }
+  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) return null;
   return focusables[(offsetIndex + length) % length];
 }
 
