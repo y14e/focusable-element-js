@@ -8,7 +8,7 @@ export function getFocusableElements(container) {
   return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter((element) => element.checkVisibility());
 }
 
-function getRelativeFocusableElement(container = document.body || document.documentElement, { current = document.activeElement, offset = 0, wrap = false } = {}) {
+function getRelativeFocusableElement(container = document.body || document.documentElement, { active, offset = 0, wrap = false } = {}) {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
   if (!length) {
@@ -21,8 +21,8 @@ function getRelativeFocusableElement(container = document.body || document.docum
     }
     return active;
   };
-  current = current || getActiveElement();
-  if (!current) {
+  const current = active || getActiveElement();
+  if (!current || !container.contains(current)) {
     return null;
   }
   const currentIndex = focusables.indexOf(current);
