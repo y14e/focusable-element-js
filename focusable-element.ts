@@ -14,7 +14,7 @@ export function getFocusableElements(container?: HTMLElement | null): HTMLElemen
   return [...(container || document.body || document.documentElement).querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter((element) => element.checkVisibility());
 }
 
-function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current = document.activeElement as HTMLElement | null, offset = 0, wrap = false }: FocusableElementOptions): HTMLElement | null {
+function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current = document.activeElement as HTMLElement | null, offset = 0, wrap = false }: FocusableElementOptions = {}): HTMLElement | null {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
   if (!length) {
