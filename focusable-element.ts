@@ -1,6 +1,6 @@
 interface FocusableElementOptions {
   current?: HTMLElement | null;
-  offset: number;
+  offset?: number;
   wrap?: boolean;
 }
 
@@ -14,7 +14,7 @@ export function getFocusableElements(container?: HTMLElement | null): HTMLElemen
   return [...(container || document.body || document.documentElement).querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter((element) => element.checkVisibility());
 }
 
-function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current, offset, wrap = false }: FocusableElementOptions): HTMLElement | null {
+function getRelativeFocusableElement(container: HTMLElement | null = document.body || document.documentElement, { current = document.activeElement as HTMLElement | null, offset = 0, wrap = false }: FocusableElementOptions = {}): HTMLElement | null {
   const focusables = getFocusableElements(container);
   const length = focusables.length;
   if (!length) {
@@ -42,10 +42,10 @@ function getRelativeFocusableElement(container: HTMLElement | null = document.bo
   return focusables[(offsetIndex + length) % length];
 }
 
-export function getNextFocusableElement(container?: HTMLElement | null, options: Omit<Partial<FocusableElementOptions>, 'offset'> = {}): HTMLElement | null {
+export function getNextFocusableElement(container?: HTMLElement | null, options: FocusableElementOptions = {}): HTMLElement | null {
   return getRelativeFocusableElement(container, { ...options, offset: 1 });
 }
 
-export function getPreviousFocusableElement(container?: HTMLElement | null, options: Omit<Partial<FocusableElementOptions>, 'offset'> = {}): HTMLElement | null {
+export function getPreviousFocusableElement(container?: HTMLElement | null, options: FocusableElementOptions = {}): HTMLElement | null {
   return getRelativeFocusableElement(container, { ...options, offset: -1 });
 }
