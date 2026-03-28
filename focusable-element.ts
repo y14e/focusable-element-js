@@ -16,14 +16,14 @@ export function getFocusableElements(container?: HTMLElement): HTMLElement[] {
 
 function getRelativeFocusableElement(container: HTMLElement = document.body || document.documentElement, { active, offset = 0, wrap = false }: FocusableElementOptions = {}): HTMLElement | null {
   const focusables = getFocusableElements(container);
-  const length = focusables.length;
+  const { length } = focusables;
   if (!length) return null;
   const getActiveElement = (): HTMLElement | null => {
-    let active = document.activeElement;
-    while (active && active.shadowRoot?.activeElement) {
-      active = active.shadowRoot.activeElement;
+    let a = document.activeElement;
+    while (a && a.shadowRoot?.activeElement) {
+      a = a.shadowRoot.activeElement;
     }
-    return active as HTMLElement | null;
+    return a as HTMLElement | null;
   };
   const current = active || getActiveElement();
   if (!current || !container.contains(current)) return null;
