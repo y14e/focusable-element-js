@@ -19,11 +19,11 @@ function getRelativeFocusableElement(container: HTMLElement = document.body || d
   const { length } = focusables;
   if (!length) return null;
   const getActiveElement = (): HTMLElement | null => {
-    let a = document.activeElement;
-    while (a && a.shadowRoot?.activeElement) {
-      a = a.shadowRoot.activeElement;
+    let active = document.activeElement;
+    while (active?.shadowRoot?.activeElement) {
+      active = active.shadowRoot.activeElement;
     }
-    return a as HTMLElement | null;
+    return active as HTMLElement | null;
   };
   const current = active || getActiveElement();
   if (!current || !container.contains(current)) return null;

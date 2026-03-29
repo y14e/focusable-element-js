@@ -13,11 +13,11 @@ function getRelativeFocusableElement(container = document.body || document.docum
   const { length } = focusables;
   if (!length) return null;
   const getActiveElement = () => {
-    let a = document.activeElement;
-    while (a && a.shadowRoot?.activeElement) {
-      a = a.shadowRoot.activeElement;
+    let active = document.activeElement;
+    while (active?.shadowRoot?.activeElement) {
+      active = active.shadowRoot.activeElement;
     }
-    return a;
+    return active;
   };
   const current = active || getActiveElement();
   if (!current || !container.contains(current)) return null;
