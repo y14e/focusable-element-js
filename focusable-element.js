@@ -10,7 +10,7 @@ export function getFocusableElements(container) {
 
 function getRelativeFocusableElement(container = document.body || document.documentElement, { active, offset = 0, wrap = false } = {}) {
   const focusables = getFocusableElements(container);
-  const length = focusables.length;
+  const { length } = focusables;
   if (!length) return null;
   const getActiveElement = () => {
     let a = document.activeElement;
