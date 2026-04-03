@@ -23,13 +23,6 @@ function getRelativeFocusableElement(container = document.body || document.docum
   const focusables = getFocusableElements(container);
   const { length } = focusables;
   if (!length) return null;
-  const getActiveElement = () => {
-    let active = document.activeElement;
-    while (active?.shadowRoot?.activeElement) {
-      active = active.shadowRoot.activeElement;
-    }
-    return active;
-  };
   const current = active || getActiveElement();
   if (!current || !container.contains(current)) return null;
   const currentIndex = focusables.indexOf(current);
@@ -45,4 +38,12 @@ export function getNextFocusableElement(container, options = {}) {
 
 export function getPreviousFocusableElement(container, options = {}) {
   return getRelativeFocusableElement(container, { ...options, offset: -1 });
+}
+
+function getActiveElement() {
+  let active = document.activeElement;
+  while (active?.shadowRoot?.activeElement) {
+    active = active.shadowRoot.activeElement;
+  }
+  return active;
 }
