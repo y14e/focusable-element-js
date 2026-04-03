@@ -5,7 +5,18 @@ export function hasFocusableElement(container) {
 }
 
 export function getFocusableElements(container) {
-  return [...(container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR)].filter((element) => element.checkVisibility());
+  const nodes = (container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR);
+  const elements = new Array(nodes.length);
+  nodes.forEach((node, i) => {
+    elements[i] = node;
+  });
+  const visibles = [];
+  elements.forEach((element) => {
+    if (element.checkVisibility()) {
+      visibles.push(element);
+    }
+  });
+  return visibles;
 }
 
 function getRelativeFocusableElement(container = document.body || document.documentElement, { active, offset = 0, wrap = false } = {}) {

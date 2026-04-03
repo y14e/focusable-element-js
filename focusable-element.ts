@@ -11,7 +11,18 @@ export function hasFocusableElement(container?: HTMLElement): boolean {
 }
 
 export function getFocusableElements(container?: HTMLElement): HTMLElement[] {
-  return [...(container || document.body || document.documentElement).querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter((element) => element.checkVisibility());
+  const nodes = (container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR);
+  const elements = new Array(nodes.length);
+  nodes.forEach((node, i) => {
+    elements[i] = node;
+  });
+  const visibles: HTMLElement[] = [];
+  elements.forEach((element) => {
+    if (element.checkVisibility()) {
+      visibles.push(element);
+    }
+  });
+  return visibles;
 }
 
 function getRelativeFocusableElement(container: HTMLElement = document.body || document.documentElement, { active, offset = 0, wrap = false }: FocusableElementOptions = {}): HTMLElement | null {
