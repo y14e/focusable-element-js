@@ -8,30 +8,26 @@ const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, inpu
 
 export function hasFocusableElement(container: HTMLElement = document.body || document.documentElement): boolean {
   if (!container) return false;
-  return !!getFocusableElements(container).length;
+  return getFocusableElements(container).length > 0;
 }
 
 export function getFocusableElements(container: HTMLElement = document.body || document.documentElement): HTMLElement[] {
   if (!container) return [];
   const elements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-  const { length } = elements;
-  if (!length) return [];
-  const focusables = new Array(length);
-  let i = 0;
-  for (let j = 0; j < length; j++) {
-    const focusable = elements[j];
+  if (elements.length === 0) return [];
+  const focusables: HTMLElement[] = [];
+  for (const focusable of elements) {
     if (focusable.checkVisibility()) {
-      focusables[i++] = focusable;
+      focusables.push(focusable);
     }
   }
-  focusables.length = i;
   return focusables;
 }
 
 function getRelativeFocusableElement(container: HTMLElement, { active, offset = 0, wrap = false }: FocusableElementOptions = {}): HTMLElement | null {
   const focusables = getFocusableElements(container);
   const { length } = focusables;
-  if (!length) return null;
+  if (length === 0) return null;
   const current = active || getActiveElement();
   if (!current || !container.contains(current)) return null;
   const currentIndex = focusables.indexOf(current);
