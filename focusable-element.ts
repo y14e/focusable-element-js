@@ -16,9 +16,9 @@ export function getFocusableElements(container: HTMLElement = document.body ?? d
   const elements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
   if (elements.length === 0) return [];
   const focusables: HTMLElement[] = [];
-  for (const focusable of elements) {
-    if (!focusable.closest('[inert]') && focusable.checkVisibility()) {
-      focusables.push(focusable);
+  for (const element of elements) {
+    if (!element.closest('[inert]') && element.checkVisibility()) {
+      focusables.push(element);
     }
   }
   return focusables;
