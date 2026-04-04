@@ -13,20 +13,18 @@ export function hasFocusableElement(container: HTMLElement = document.body || do
 
 export function getFocusableElements(container: HTMLElement = document.body || document.documentElement): HTMLElement[] {
   if (!container) return [];
-  const elements = container.querySelectorAll(FOCUSABLE_SELECTOR);
+  const elements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
   const { length } = elements;
   if (!length) return [];
-  const array = new Array(length);
-  elements.forEach((node, i) => {
-    array[i] = node;
-  });
-  if (!array.length) return [];
-  const focusables: HTMLElement[] = [];
-  array.forEach((element) => {
-    if (element.checkVisibility()) {
-      focusables.push(element);
+  const focusables = new Array(length);
+  let i = 0;
+  for (let j = 0; j < length; j++) {
+    const focusable = elements[j];
+    if (focusable.checkVisibility()) {
+      focusables[i++] = focusable;
     }
-  });
+  }
+  focusables.length = i;
   return focusables;
 }
 
