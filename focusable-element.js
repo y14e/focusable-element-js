@@ -1,25 +1,30 @@
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
 
-export function hasFocusableElement(container) {
+export function hasFocusableElement(container = document.body || document.documentElement) {
+  if (!container) return false;
   return !!getFocusableElements(container).length;
 }
 
-export function getFocusableElements(container) {
-  const nodes = (container || document.body || document.documentElement).querySelectorAll(FOCUSABLE_SELECTOR);
-  const elements = new Array(nodes.length);
-  nodes.forEach((node, i) => {
-    elements[i] = node;
+export function getFocusableElements(container = document.body || document.documentElement) {
+  if (!container) return [];
+  const elements = container.querySelectorAll(FOCUSABLE_SELECTOR);
+  const { length } = elements;
+  if (!length) return [];
+  const array = new Array(length);
+  elements.forEach((node, i) => {
+    array[i] = node;
   });
-  const visibles = [];
-  elements.forEach((element) => {
+  if (!array.length) return [];
+  const focusables = [];
+  array.forEach((element) => {
     if (element.checkVisibility()) {
-      visibles.push(element);
+      focusables.push(element);
     }
   });
-  return visibles;
+  return focusables;
 }
 
-function getRelativeFocusableElement(container = document.body || document.documentElement, { active, offset = 0, wrap = false } = {}) {
+function getRelativeFocusableElement(container, { active, offset = 0, wrap = false } = {}) {
   const focusables = getFocusableElements(container);
   const { length } = focusables;
   if (!length) return null;
@@ -32,18 +37,20 @@ function getRelativeFocusableElement(container = document.body || document.docum
   return focusables[(offsetIndex + length) % length];
 }
 
-export function getNextFocusableElement(container, options = {}) {
+export function getNextFocusableElement(container = document.body || document.documentElement, options = {}) {
+  if (!container) return null;
   return getRelativeFocusableElement(container, { ...options, offset: 1 });
 }
 
-export function getPreviousFocusableElement(container, options = {}) {
+export function getPreviousFocusableElement(container = document.body || document.documentElement, options = {}) {
+  if (!container) return null;
   return getRelativeFocusableElement(container, { ...options, offset: -1 });
 }
 
 function getActiveElement() {
   let active = document.activeElement;
-  while (active?.shadowRoot?.activeElement) {
+  while (active instanceof HTMLElement && active.shadowRoot?.activeElement) {
     active = active.shadowRoot.activeElement;
   }
-  return active;
+  return active instanceof HTMLElement ? active : null;
 }
