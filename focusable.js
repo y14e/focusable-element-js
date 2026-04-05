@@ -41,11 +41,12 @@ function getActiveElement() {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container, { active, offset = 0, wrap = false } = {}) {
+function getRelativeFocusable(container, options = {}) {
+  const { active, offset = 0, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
   if (length === 0) return null;
-  const current = active || getActiveElement();
+  const current = active ?? getActiveElement();
   if (!current || (!container.contains(current) && !container.shadowRoot?.contains(current))) return null;
   const currentIndex = focusables.indexOf(current);
   if (currentIndex === -1) return null;

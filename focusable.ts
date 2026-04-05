@@ -47,11 +47,12 @@ function getActiveElement(): HTMLElement | null {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container: HTMLElement, { active, offset = 0, wrap = false }: FocusableOptions = {}): HTMLElement | null {
+function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
+  const { active, offset = 0, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
   if (length === 0) return null;
-  const current = active || getActiveElement();
+  const current = active ?? getActiveElement();
   if (!current || (!container.contains(current) && !container.shadowRoot?.contains(current))) return null;
   const currentIndex = focusables.indexOf(current);
   if (currentIndex === -1) return null;
