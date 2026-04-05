@@ -4,7 +4,7 @@ interface FocusableOptions {
   wrap?: boolean;
 }
 
-const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
+const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
 
 export function hasFocusable(container: HTMLElement = document.body ?? document.documentElement): boolean {
   if (!container) return false;
@@ -17,7 +17,7 @@ export function getFocusables(container: HTMLElement = document.body ?? document
   if (elements.length === 0) return [];
   const focusables: HTMLElement[] = [];
   for (const element of elements) {
-    if (!element.closest('[inert]') && element.checkVisibility()) {
+    if (!element.closest('[aria-disabled="true"], [inert]') && element.checkVisibility()) {
       focusables.push(element);
     }
   }

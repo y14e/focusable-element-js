@@ -1,4 +1,4 @@
-const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
+const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
 
 export function hasFocusable(container = document.body ?? document.documentElement) {
   if (!container) return false;
@@ -11,7 +11,7 @@ export function getFocusables(container = document.body ?? document.documentElem
   if (elements.length === 0) return [];
   const focusables = [];
   for (const element of elements) {
-    if (!element.closest('[inert]') && element.checkVisibility()) {
+    if (!element.closest('[aria-disabled="true"], [inert]') && element.checkVisibility()) {
       focusables.push(element);
     }
   }
