@@ -1,15 +1,21 @@
-const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
-
-export function hasFocusableElement(container = document.body ?? document.documentElement) {
-  if (!container) return false;
-  return getFocusableElements(container).length > 0;
+interface FocusableOptions {
+  active?: HTMLElement | null;
+  offset?: number;
+  wrap?: boolean;
 }
 
-export function getFocusableElements(container = document.body ?? document.documentElement) {
+const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([disabled], [hidden], [tabindex="-1"])';
+
+export function hasFocusable(container: HTMLElement = document.body ?? document.documentElement): boolean {
+  if (!container) return false;
+  return getFocusables(container).length > 0;
+}
+
+export function getFocusables(container: HTMLElement = document.body ?? document.documentElement): HTMLElement[] {
   if (!container) return [];
-  const elements = container.querySelectorAll(FOCUSABLE_SELECTOR);
+  const elements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
   if (elements.length === 0) return [];
-  const focusables = [];
+  const focusables: HTMLElement[] = [];
   for (const element of elements) {
     if (!element.closest('[inert]') && element.checkVisibility()) {
       focusables.push(element);
@@ -18,17 +24,17 @@ export function getFocusableElements(container = document.body ?? document.docum
   return focusables;
 }
 
-export function getPreviousFocusableElement(container = document.body ?? document.documentElement, options = {}) {
+export function getPreviousFocusable(container: HTMLElement = document.body ?? document.documentElement, options: FocusableOptions = {}): HTMLElement | null {
   if (!container) return null;
-  return getRelativeFocusableElement(container, { ...options, offset: -1 });
+  return getRelativeFocusable(container, { ...options, offset: -1 });
 }
 
-export function getNextFocusableElement(container = document.body ?? document.documentElement, options = {}) {
+export function getNextFocusable(container: HTMLElement = document.body ?? document.documentElement, options: FocusableOptions = {}): HTMLElement | null {
   if (!container) return null;
-  return getRelativeFocusableElement(container, { ...options, offset: 1 });
+  return getRelativeFocusable(container, { ...options, offset: 1 });
 }
 
-function getActiveElement() {
+function getActiveElement(): HTMLElement | null {
   let active = document.activeElement;
   while (active instanceof HTMLElement && active.shadowRoot?.activeElement) {
     active = active.shadowRoot.activeElement;
@@ -36,8 +42,8 @@ function getActiveElement() {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusableElement(container, { active, offset = 0, wrap = false } = {}) {
-  const focusables = getFocusableElements(container);
+function getRelativeFocusable(container: HTMLElement, { active, offset = 0, wrap = false }: FocusableOptions = {}): HTMLElement | null {
+  const focusables = getFocusables(container);
   const { length } = focusables;
   if (length === 0) return null;
   const current = active || getActiveElement();
