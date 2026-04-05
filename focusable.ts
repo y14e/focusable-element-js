@@ -6,6 +6,11 @@ interface FocusableOptions {
 
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
 
+export function isFocusable(element: HTMLElement): boolean {
+  if (!element) return false;
+  return element.matches(FOCUSABLE_SELECTOR) && !element.closest('[aria-disabled="true"], [inert]') && element.checkVisibility();
+}
+
 export function hasFocusable(container: HTMLElement = document.body ?? document.documentElement): boolean {
   if (!container) return false;
   return getFocusables(container).length > 0;
@@ -17,7 +22,7 @@ export function getFocusables(container: HTMLElement = document.body ?? document
   if (elements.length === 0) return [];
   const focusables: HTMLElement[] = [];
   for (const element of elements) {
-    if (!element.closest('[aria-disabled="true"], [inert]') && element.checkVisibility()) {
+    if (isFocusable(element)) {
       focusables.push(element);
     }
   }
