@@ -1,7 +1,7 @@
 interface FocusableOptions {
-  active?: HTMLElement | null;
-  offset?: number;
-  wrap?: boolean;
+  active: HTMLElement | null;
+  offset: number;
+  wrap: boolean;
 }
 
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
@@ -29,12 +29,12 @@ export function getFocusables(container: HTMLElement = document.body ?? document
   return focusables;
 }
 
-export function getPreviousFocusable(container: HTMLElement = document.body ?? document.documentElement, options: FocusableOptions = {}): HTMLElement | null {
+export function getPreviousFocusable(container: HTMLElement = document.body ?? document.documentElement, options: Partial<FocusableOptions> = {}): HTMLElement | null {
   if (!container) return null;
   return getRelativeFocusable(container, { ...options, offset: -1 });
 }
 
-export function getNextFocusable(container: HTMLElement = document.body ?? document.documentElement, options: FocusableOptions = {}): HTMLElement | null {
+export function getNextFocusable(container: HTMLElement = document.body ?? document.documentElement, options: Partial<FocusableOptions> = {}): HTMLElement | null {
   if (!container) return null;
   return getRelativeFocusable(container, { ...options, offset: 1 });
 }
@@ -47,7 +47,7 @@ function getActiveElement(): HTMLElement | null {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
+function getRelativeFocusable(container: HTMLElement, options: Partial<FocusableOptions> = {}): HTMLElement | null {
   const { active, offset = 0, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
