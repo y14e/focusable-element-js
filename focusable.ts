@@ -6,20 +6,6 @@ interface FocusableOptions {
 
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
 
-export function isFocusable(element: HTMLElement): boolean {
-  if (!element) {
-    return false;
-  }
-  return element.matches(FOCUSABLE_SELECTOR) && !element.parentElement?.closest('[aria-disabled="true"], [inert]') && element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true });
-}
-
-export function hasFocusable(container: HTMLElement = document.body): boolean {
-  if (!container) {
-    return false;
-  }
-  return getFocusables(container).length > 0;
-}
-
 export function getFocusables(container: HTMLElement = document.body): HTMLElement[] {
   if (!container) {
     return [];
@@ -37,13 +23,6 @@ export function getFocusables(container: HTMLElement = document.body): HTMLEleme
   return focusables;
 }
 
-export function getPreviousFocusable(container: HTMLElement = document.body, options: FocusableOptions = {}): HTMLElement | null {
-  if (!container) {
-    return null;
-  }
-  return getRelativeFocusable(container, { ...options, offset: -1 });
-}
-
 export function getNextFocusable(container: HTMLElement = document.body, options: FocusableOptions = {}): HTMLElement | null {
   if (!container) {
     return null;
@@ -51,9 +30,39 @@ export function getNextFocusable(container: HTMLElement = document.body, options
   return getRelativeFocusable(container, { ...options, offset: 1 });
 }
 
+export function getPreviousFocusable(container: HTMLElement = document.body, options: FocusableOptions = {}): HTMLElement | null {
+  if (!container) {
+    return null;
+  }
+  return getRelativeFocusable(container, { ...options, offset: -1 });
+}
+
+export function hasFocusable(container: HTMLElement = document.body): boolean {
+  if (!container) {
+    return false;
+  }
+  return getFocusables(container).length > 0;
+}
+
+export function isFocusable(element: HTMLElement): boolean {
+  if (!element) {
+    return false;
+  }
+  return element.matches(FOCUSABLE_SELECTOR) && !disabledDeep(element) && element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true });
+}
+
 function containsDeep(container: Node, node: Node): boolean {
-  for (let current: Node | null = node; current; current = current instanceof ShadowRoot ? current.host : current.parentNode) {
+  for (let current: Node | null = node; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
     if (current === container) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function disabledDeep(element: Element): boolean {
+  for (let current: Node | null = element.parentNode; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
+    if (current instanceof Element && current.matches('[aria-disabled="true"], [inert]')) {
       return true;
     }
   }

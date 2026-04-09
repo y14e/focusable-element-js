@@ -1,19 +1,5 @@
 const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], [disabled], [hidden], [inert], [tabindex="-1"])';
 
-export function isFocusable(element) {
-  if (!element) {
-    return false;
-  }
-  return element.matches(FOCUSABLE_SELECTOR) && !element.parentElement?.closest('[aria-disabled="true"], [inert]') && element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true });
-}
-
-export function hasFocusable(container = document.body) {
-  if (!container) {
-    return false;
-  }
-  return getFocusables(container).length > 0;
-}
-
 export function getFocusables(container = document.body) {
   if (!container) {
     return [];
@@ -31,13 +17,6 @@ export function getFocusables(container = document.body) {
   return focusables;
 }
 
-export function getPreviousFocusable(container = document.body, options = {}) {
-  if (!container) {
-    return null;
-  }
-  return getRelativeFocusable(container, { ...options, offset: -1 });
-}
-
 export function getNextFocusable(container = document.body, options = {}) {
   if (!container) {
     return null;
@@ -45,9 +24,39 @@ export function getNextFocusable(container = document.body, options = {}) {
   return getRelativeFocusable(container, { ...options, offset: 1 });
 }
 
+export function getPreviousFocusable(container = document.body, options = {}) {
+  if (!container) {
+    return null;
+  }
+  return getRelativeFocusable(container, { ...options, offset: -1 });
+}
+
+export function hasFocusable(container = document.body) {
+  if (!container) {
+    return false;
+  }
+  return getFocusables(container).length > 0;
+}
+
+export function isFocusable(element) {
+  if (!element) {
+    return false;
+  }
+  return element.matches(FOCUSABLE_SELECTOR) && !disabledDeep(element) && element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true });
+}
+
 function containsDeep(container, node) {
-  for (let current = node; current; current = current instanceof ShadowRoot ? current.host : current.parentNode) {
+  for (let current = node; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
     if (current === container) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function disabledDeep(element) {
+  for (let current = element.parentNode; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
+    if (current instanceof Element && current.matches('[aria-disabled="true"], [inert]')) {
       return true;
     }
   }
