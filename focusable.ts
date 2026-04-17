@@ -1,4 +1,5 @@
-const FOCUSABLE_SELECTOR = ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])';
+const FOCUSABLE_SELECTOR =
+  ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])';
 
 interface FocusableOptions {
   active?: HTMLElement | null;
@@ -6,7 +7,9 @@ interface FocusableOptions {
   wrap?: boolean;
 }
 
-export function getFocusables(container: HTMLElement = document.body): HTMLElement[] {
+export function getFocusables(
+  container: HTMLElement = document.body,
+): HTMLElement[] {
   if (!container) {
     return [];
   }
@@ -28,14 +31,20 @@ export function getFocusables(container: HTMLElement = document.body): HTMLEleme
   return focusables;
 }
 
-export function getNextFocusable(container: HTMLElement = document.body, options: FocusableOptions = {}): HTMLElement | null {
+export function getNextFocusable(
+  container: HTMLElement = document.body,
+  options: FocusableOptions = {},
+): HTMLElement | null {
   if (!container) {
     return null;
   }
   return getRelativeFocusable(container, { ...options, offset: 1 });
 }
 
-export function getPreviousFocusable(container: HTMLElement = document.body, options: FocusableOptions = {}): HTMLElement | null {
+export function getPreviousFocusable(
+  container: HTMLElement = document.body,
+  options: FocusableOptions = {},
+): HTMLElement | null {
   if (!container) {
     return null;
   }
@@ -53,11 +62,25 @@ export function isFocusable(element: HTMLElement): boolean {
   if (!element) {
     return false;
   }
-  return element.matches(FOCUSABLE_SELECTOR) && !disabledDeep(element) && element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true });
+  return (
+    element.matches(FOCUSABLE_SELECTOR) &&
+    !disabledDeep(element) &&
+    element.checkVisibility({
+      contentVisibilityAuto: true,
+      opacityProperty: true,
+      visibilityProperty: true,
+    })
+  );
 }
 
 function containsDeep(container: Node, node: Node): boolean {
-  for (let current: Node | null = node; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
+  for (
+    let current: Node | null = node;
+    current;
+    current = !(current instanceof ShadowRoot)
+      ? current.parentNode
+      : current.host
+  ) {
     if (current === container) {
       return true;
     }
@@ -66,8 +89,17 @@ function containsDeep(container: Node, node: Node): boolean {
 }
 
 function disabledDeep(element: Element): boolean {
-  for (let current: Node | null = element.parentNode; current; current = !(current instanceof ShadowRoot) ? current.parentNode : current.host) {
-    if (current instanceof Element && current.matches('[aria-disabled="true"], [inert]')) {
+  for (
+    let current: Node | null = element.parentNode;
+    current;
+    current = !(current instanceof ShadowRoot)
+      ? current.parentNode
+      : current.host
+  ) {
+    if (
+      current instanceof Element &&
+      current.matches('[aria-disabled="true"], [inert]')
+    ) {
       return true;
     }
   }
@@ -82,21 +114,36 @@ function getActiveElement(): HTMLElement | null {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
+function getRelativeFocusable(
+  container: HTMLElement,
+  options: FocusableOptions = {},
+): HTMLElement | null {
   const { active, offset = 0, wrap = false } = options;
-  const focusables = getFocusables(container);
 
+  const focusables = getFocusables(container);
   const { length } = focusables;
-  if (length === 0) return null;
+
+  if (length === 0) {
+    return null;
+  }
 
   const current = active ?? getActiveElement();
-  if (!current || !containsDeep(container, current)) return null;
+
+  if (!current || !containsDeep(container, current)) {
+    return null;
+  }
 
   const currentIndex = focusables.indexOf(current);
-  if (currentIndex === -1) return null;
+
+  if (currentIndex === -1) {
+    return null;
+  }
 
   const offsetIndex = currentIndex + offset;
-  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) return null;
+
+  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) {
+    return null;
+  }
 
   return focusables[(offsetIndex + length) % length];
 }
