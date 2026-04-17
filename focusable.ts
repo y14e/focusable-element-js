@@ -108,9 +108,11 @@ function disabledDeep(element: Element): boolean {
 
 function getActiveElement(): HTMLElement | null {
   let active = document.activeElement;
+
   while (active instanceof HTMLElement && active.shadowRoot?.activeElement) {
     active = active.shadowRoot.activeElement;
   }
+
   return active instanceof HTMLElement ? active : null;
 }
 
