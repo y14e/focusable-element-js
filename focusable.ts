@@ -7,9 +7,7 @@ export interface FocusableOptions {
   readonly wrap?: boolean;
 }
 
-export function getFocusables(
-  container: HTMLElement = document.body,
-): HTMLElement[] {
+export function getFocusables(container: HTMLElement = document.body): HTMLElement[] {
   if (!container) {
     return [];
   }
@@ -81,9 +79,7 @@ function containsDeep(container: Node, node: Node): boolean {
   for (
     let current: Node | null = node;
     current;
-    current = !(current instanceof ShadowRoot)
-      ? current.parentNode
-      : current.host
+    current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
   ) {
     if (current === container) {
       return true;
@@ -97,14 +93,9 @@ function disabledDeep(element: Element): boolean {
   for (
     let current: Node | null = element.parentNode;
     current;
-    current = !(current instanceof ShadowRoot)
-      ? current.parentNode
-      : current.host
+    current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
   ) {
-    if (
-      current instanceof Element &&
-      current.matches('[aria-disabled="true"], [inert]')
-    ) {
+    if (current instanceof Element && current.matches('[aria-disabled="true"], [inert]')) {
       return true;
     }
   }
@@ -122,10 +113,7 @@ function getActiveElement(): HTMLElement | null {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(
-  container: HTMLElement,
-  options: FocusableOptions = {},
-): HTMLElement | null {
+function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
   const { active, offset = 0, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
