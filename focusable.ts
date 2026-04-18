@@ -2,7 +2,7 @@ const FOCUSABLE_SELECTOR =
   ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])';
 
 export interface FocusableOptions {
-  readonly active?: HTMLElement | null
+  readonly active?: HTMLElement | null;
   readonly offset?: number;
   readonly wrap?: boolean;
 }
@@ -38,6 +38,7 @@ export function getNextFocusable(
   if (!container) {
     return null;
   }
+
   return getRelativeFocusable(container, { ...options, offset: 1 });
 }
 
@@ -48,6 +49,7 @@ export function getPreviousFocusable(
   if (!container) {
     return null;
   }
+
   return getRelativeFocusable(container, { ...options, offset: -1 });
 }
 
@@ -55,6 +57,7 @@ export function hasFocusable(container: HTMLElement = document.body): boolean {
   if (!container) {
     return false;
   }
+
   return getFocusables(container).length > 0;
 }
 
@@ -62,6 +65,7 @@ export function isFocusable(element: HTMLElement): boolean {
   if (!element) {
     return false;
   }
+
   return (
     element.matches(FOCUSABLE_SELECTOR) &&
     !disabledDeep(element) &&
@@ -85,6 +89,7 @@ function containsDeep(container: Node, node: Node): boolean {
       return true;
     }
   }
+
   return false;
 }
 
@@ -103,6 +108,7 @@ function disabledDeep(element: Element): boolean {
       return true;
     }
   }
+
   return false;
 }
 
@@ -121,7 +127,6 @@ function getRelativeFocusable(
   options: FocusableOptions = {},
 ): HTMLElement | null {
   const { active, offset = 0, wrap = false } = options;
-
   const focusables = getFocusables(container);
   const { length } = focusables;
 
