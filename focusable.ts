@@ -1,5 +1,4 @@
-const FOCUSABLE_SELECTOR =
-  ':is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])';
+const FOCUSABLE_SELECTOR = `:is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])`;
 
 export interface FocusableOptions {
   readonly active?: HTMLElement | null;
