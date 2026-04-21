@@ -139,5 +139,5 @@ function getRelativeFocusable(container: HTMLElement, options: FocusableOptions 
     return null;
   }
 
-  return focusables[(offsetIndex + length) % length];
+  return focusables[(offsetIndex + length) % length] as HTMLElement;
 }
