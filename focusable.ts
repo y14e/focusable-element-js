@@ -4,7 +4,7 @@ export interface FocusableOptions {
   readonly wrap?: boolean;
 }
 
-const FOCUSABLE_SELECTOR = `:is(a[href], area[href], button, embed, iframe, input:not([type="hidden"]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false"]), [controls], [tabindex]):not([aria-disabled="true"], :disabled, [hidden], [inert], [tabindex="-1"])`;
+const FOCUSABLE_SELECTOR = `:is(a[href], area[href], button, embed, iframe, input:not([type="hidden" i]), object, select, details > summary:first-of-type, textarea, [contenteditable]:not([contenteditable="false" i]), [controls], [tabindex]):not([aria-disabled="true" i], :disabled, [hidden], [inert], [tabindex="-1"])`;
 
 export function getFocusables(container: HTMLElement = document.body): HTMLElement[] {
   if (!container) {
@@ -94,7 +94,7 @@ function disabledDeep(element: Element): boolean {
     current;
     current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
   ) {
-    if (current instanceof Element && current.matches('[aria-disabled="true"], [inert]')) {
+    if (current instanceof Element && current.matches('[aria-disabled="true" i], [inert]')) {
       return true;
     }
   }
