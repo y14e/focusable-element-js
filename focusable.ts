@@ -113,7 +113,7 @@ function getActiveElement(): HTMLElement | null {
 }
 
 function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
-  const { active, offset = 0, wrap = false } = options;
+  const { active, offset = 0, wrap: isWrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
 
@@ -135,7 +135,7 @@ function getRelativeFocusable(container: HTMLElement, options: FocusableOptions 
 
   const offsetIndex = currentIndex + offset;
 
-  if ((offsetIndex < 0 || offsetIndex >= length) && !wrap) {
+  if ((offsetIndex < 0 || offsetIndex >= length) && !isWrap) {
     return null;
   }
 
