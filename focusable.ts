@@ -11,21 +11,7 @@ export function getFocusables(container: HTMLElement = document.body): HTMLEleme
     return [];
   }
 
-  const elements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-
-  if (elements.length === 0) {
-    return [];
-  }
-
-  const focusables: HTMLElement[] = [];
-
-  for (const element of elements) {
-    if (isFocusable(element)) {
-      focusables.push(element);
-    }
-  }
-
-  return focusables;
+  return [...container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter((element) => isFocusable(element));
 }
 
 export function getNextFocusable(
