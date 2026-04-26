@@ -60,7 +60,7 @@ export function isFocusable(element: HTMLElement): boolean {
   );
 }
 
-function containsDeep(container: Node, node: Node): boolean {
+function containsDeep(container: Node, node: Node) {
   for (
     let current: Node | null = node;
     current;
@@ -74,7 +74,7 @@ function containsDeep(container: Node, node: Node): boolean {
   return false;
 }
 
-function disabledDeep(element: Element): boolean {
+function disabledDeep(element: Element) {
   for (
     let current: Node | null = element.parentNode;
     current;
@@ -88,7 +88,7 @@ function disabledDeep(element: Element): boolean {
   return false;
 }
 
-function getActiveElement(): HTMLElement | null {
+function getActiveElement() {
   let active = document.activeElement;
 
   while (active instanceof HTMLElement && active.shadowRoot?.activeElement) {
@@ -98,7 +98,7 @@ function getActiveElement(): HTMLElement | null {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}): HTMLElement | null {
+function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}) {
   const { active, offset = 0, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
