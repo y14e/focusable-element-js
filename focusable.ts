@@ -12,7 +12,7 @@ export function getFocusables(container: HTMLElement = document.body): HTMLEleme
     return [];
   }
 
-  return [...container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter((element) => isFocusable(element));
+  return [...container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter(isFocusable);
 }
 
 export function getNextFocusable(
