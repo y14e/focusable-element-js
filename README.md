@@ -20,14 +20,14 @@ const container = document.querySelector('.container');
 const button = container.querySelector('.button');
 ```
 
-**getFocusables**
+### getFocusables
 
 ```ts
 getFocusables(container);
 // => HTMLElement[]
 ```
 
-**getNextFocusable**
+### getNextFocusable
 
 ```ts
 getNextFocusable(container);
@@ -40,7 +40,7 @@ getNextFocusable(container, { active: button });
 getNextFocusable(container, { wrap: true });
 ```
 
-**getPreviousFocusable**
+### getPreviousFocusable
 
 ```ts
 getPreviousFocusable(container);
@@ -54,14 +54,14 @@ getPreviousFocusable(container, { wrap: true });
 
 ```
 
-**hasFocusable**
+### hasFocusable
 
 ```ts
 hasFocusable(container);
 // => Boolean
 ```
 
-**isFocusable**
+### isFocusable
 
 ```ts
 isFocusable(button);
