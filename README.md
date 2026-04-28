@@ -3,7 +3,11 @@
 TS snippet for detecting and getting focusable element(s).
 
 > [!NOTE]
-> The `<fieldset>` element has some tricky specs, so we need to refactor the logic around it.
+> The `<fieldset>` element has non-trivial focus behavior.
+> 
+> A disabled `<fieldset>` makes its descendant form controls unfocusable, except those within the first `<legend>`. However, non-form elements are not automatically disabled and may remain focusable (e.g. via `tabindex`).
+> 
+> This utility does not fully account for these edge cases yet and may return incorrect results in such scenarios.
 
 ## Usage
 
@@ -22,6 +26,8 @@ const button = container.querySelector('.button');
 
 ### getFocusables
 
+Returns all focusable elements within the container.
+
 ```ts
 getFocusables(container);
 // => HTMLElement[]
@@ -29,42 +35,50 @@ getFocusables(container);
 
 ### getNextFocusable
 
+Returns the next focusable element within the container, starting from `document.activeElement`.
+
 ```ts
 getNextFocusable(container);
-// => HTMLElement or null
+// => HTMLElement | null
 
-// Next focusable element in container, starting from the specified active element
+// Starting from a specific element
 getNextFocusable(container, { active: button });
 
-// Next focusable element in container, wrapping to the first if necessary
+// Wrap to the first element if necessary
 getNextFocusable(container, { wrap: true });
 ```
 
 ### getPreviousFocusable
 
+Returns the previous focusable element within the container, starting from `document.activeElement`.
+
 ```ts
 getPreviousFocusable(container);
-// => HTMLElement or null
+// => HTMLElement | null
 
-// Previous focusable element in container, starting from the specified active element
+// Starting from a specific element
 getPreviousFocusable(container, { active: button });
 
-// Previous focusable element in container, wrapping to the last if necessary
+// Wrap to the last element if necessary
 getPreviousFocusable(container, { wrap: true });
 
 ```
 
 ### hasFocusable
 
+Returns whether the container contains at least one focusable element.
+
 ```ts
 hasFocusable(container);
-// => Boolean
+// => boolean
 ```
 
 ### isFocusable
 
+Returns whether the given element is focusable.
+
 ```ts
 isFocusable(button);
-// => Boolean
+// => boolean
 
 ```
