@@ -61,7 +61,7 @@ function containsDeep(container: Node, node: Node) {
   for (
     let current: Node | null = node;
     current;
-    current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
+    current = !(current instanceof ShadowRoot) ? current.parentNode : current.mode === 'open' ? current.host : null
   ) {
     if (current === container) {
       return true;
