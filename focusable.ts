@@ -1,6 +1,5 @@
 export interface FocusableOptions {
   readonly active?: HTMLElement | null;
-  readonly offset?: number;
   readonly wrap?: boolean;
 }
 
@@ -23,7 +22,7 @@ export function getNextFocusable(
     return null;
   }
 
-  return getRelativeFocusable(container, { ...options, offset: 1 });
+  return getRelativeFocusable(container, 1, { ...options });
 }
 
 export function getPreviousFocusable(
@@ -34,7 +33,7 @@ export function getPreviousFocusable(
     return null;
   }
 
-  return getRelativeFocusable(container, { ...options, offset: -1 });
+  return getRelativeFocusable(container, -1, { ...options });
 }
 
 export function hasFocusable(container: HTMLElement = document.body): boolean {
@@ -81,8 +80,8 @@ function getActiveElement() {
   return active instanceof HTMLElement ? active : null;
 }
 
-function getRelativeFocusable(container: HTMLElement, options: FocusableOptions = {}) {
-  const { active, offset = 0, wrap = false } = options;
+function getRelativeFocusable(container: HTMLElement, offset: number = 0, options: FocusableOptions = {}) {
+  const { active, wrap = false } = options;
   const focusables = getFocusables(container);
   const { length } = focusables;
 
