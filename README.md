@@ -3,11 +3,7 @@
 TS snippet for detecting and getting focusable element(s).
 
 > [!NOTE]
-> The `<fieldset>` element has non-trivial focus behavior.
-> 
-> A disabled `<fieldset>` makes its descendant form controls unfocusable, except those within the first `<legend>`. However, non-form elements are not automatically disabled and may remain focusable (e.g. via `tabindex`).
-> 
-> This utility does not fully account for these edge cases yet and may return incorrect results in such scenarios.
+> The `<fieldset>` element has some tricky specs, so we need to refactor the logic around it.
 
 ## Usage
 
