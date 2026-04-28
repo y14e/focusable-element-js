@@ -52,7 +52,7 @@ export function isFocusable(element: HTMLElement): boolean {
 
   return (
     element.matches(FOCUSABLE_SELECTOR) &&
-    !disabledDeep(element) &&
+    !isDisabledDeep(element) &&
     element.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true })
   );
 }
@@ -64,20 +64,6 @@ function containsDeep(container: Node, node: Node) {
     current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
   ) {
     if (current === container) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function disabledDeep(element: Element) {
-  for (
-    let current: Node | null = element.parentNode;
-    current;
-    current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
-  ) {
-    if (current instanceof Element && current.matches('[inert]')) {
       return true;
     }
   }
@@ -123,4 +109,18 @@ function getRelativeFocusable(container: HTMLElement, options: FocusableOptions 
   }
 
   return focusables[(offsetIndex + length) % length] ?? null;
+}
+
+function isDisabledDeep(element: Element) {
+  for (
+    let current: Node | null = element.parentNode;
+    current;
+    current = !(current instanceof ShadowRoot) ? current.parentNode : current.host
+  ) {
+    if (current instanceof Element && current.matches('[inert]')) {
+      return true;
+    }
+  }
+
+  return false;
 }
