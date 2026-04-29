@@ -14,10 +14,7 @@ import {
   getPreviousFocusable,
   hasFocusable,
   isFocusable,
-} from './focusable'
-
-const container = document.querySelector('.container');
-const button = container.querySelector('.button');
+} from './focusable';
 ```
 
 ### getFocusables
@@ -27,6 +24,8 @@ Returns all focusable elements within the container.
 ```ts
 getFocusables(container);
 // => HTMLElement[]
+//
+// container (optional): HTMLElement (default: document.body)
 ```
 
 ### getNextFocusable
@@ -36,9 +35,11 @@ Returns the next focusable element within the container, starting from `document
 ```ts
 getNextFocusable(container);
 // => HTMLElement | null
+//
+// container (optional): HTMLElement (default: document.body)
 
 // Starting from a specific element
-getNextFocusable(container, { active: button });
+getNextFocusable(container, { active: document.querySelector('.button') });
 
 // Wrap to the first element if necessary
 getNextFocusable(container, { wrap: true });
@@ -51,9 +52,11 @@ Returns the previous focusable element within the container, starting from `docu
 ```ts
 getPreviousFocusable(container);
 // => HTMLElement | null
+//
+// container (optional): HTMLElement (default: document.body)
 
 // Starting from a specific element
-getPreviousFocusable(container, { active: button });
+getPreviousFocusable(container, { active: document.querySelector('.button') });
 
 // Wrap to the last element if necessary
 getPreviousFocusable(container, { wrap: true });
@@ -67,6 +70,8 @@ Returns whether the container contains at least one focusable element.
 ```ts
 hasFocusable(container);
 // => boolean
+//
+// container (optional): HTMLElement (default: document.body)
 ```
 
 ### isFocusable
@@ -74,7 +79,9 @@ hasFocusable(container);
 Returns whether the given element is focusable.
 
 ```ts
-isFocusable(button);
+isFocusable(element);
 // => boolean
+//
+// element: HTMLElement
 
 ```
