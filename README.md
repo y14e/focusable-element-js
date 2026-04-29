@@ -17,6 +17,8 @@ import {
 } from './focusable';
 ```
 
+## 📦 API
+
 ### getFocusables
 
 Returns all focusable elements within the container.
