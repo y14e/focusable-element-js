@@ -19,7 +19,7 @@ import {
 
 ## 📦 API
 
-### getFocusables
+### `getFocusables`
 
 Returns all focusable elements within the container.
 
@@ -30,7 +30,7 @@ getFocusables(container);
 // container (optional): HTMLElement (default: document.body)
 ```
 
-### getNextFocusable
+### `getNextFocusable`
 
 Returns the next focusable element within the container, starting from `document.activeElement`.
 
@@ -47,7 +47,7 @@ getNextFocusable(container, { active: document.querySelector('.button') });
 getNextFocusable(container, { wrap: true });
 ```
 
-### getPreviousFocusable
+### `getPreviousFocusable`
 
 Returns the previous focusable element within the container, starting from `document.activeElement`.
 
@@ -65,7 +65,7 @@ getPreviousFocusable(container, { wrap: true });
 
 ```
 
-### hasFocusable
+### `hasFocusable`
 
 Returns whether the container contains at least one focusable element.
 
@@ -76,7 +76,7 @@ hasFocusable(container);
 // container (optional): HTMLElement (default: document.body)
 ```
 
-### isFocusable
+### `isFocusable`
 
 Returns whether the given element is focusable.
 
