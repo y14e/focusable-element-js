@@ -17,7 +17,7 @@ import {
 } from './focusable';
 ```
 
-## 📦 API
+## 📦 APIs
 
 ### `getFocusables`
 
